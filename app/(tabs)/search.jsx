@@ -1,4 +1,6 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import { StyleSheet, Image, Platform,Pressable,View } from 'react-native';
+import { useContext } from 'react';
+import { ThemeContext } from '@/context/ThemeContext';
 
 import { Collapsible } from '@/components/Collapsible';
 import { ExternalLink } from '@/components/ExternalLink';
@@ -6,10 +8,13 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import Octicons from '@expo/vector-icons/Octicons'
 
 export default function TabTwoScreen() {
+  const { colorScheme, setColorScheme, theme } = useContext(ThemeContext);
+    const styles = createStyles(theme, colorScheme);
   return (
-    <ParallaxScrollView
+    <View style={styles.container}
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
       headerImage={
         <IconSymbol
@@ -22,6 +27,17 @@ export default function TabTwoScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Search</ThemedText>
       </ThemedView>
+       <Pressable
+        onPress={() => setColorScheme(colorScheme === 'light' ? 'dark' : 'light')}
+        style={{ marginLeft: 10 }}
+      >
+        <Octicons
+          name={colorScheme === 'dark' ? 'moon' : 'sun'}
+          size={36}
+          color={theme.text}
+          style={{ width: 36 }}
+        />
+      </Pressable>
       <ThemedText>This app includes example code to help you get started.</ThemedText>
       <Collapsible title="File-based routing">
         <ThemedText>
@@ -91,11 +107,21 @@ export default function TabTwoScreen() {
           ),
         })}
       </Collapsible>
-    </ParallaxScrollView>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme, colorScheme) => StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.background,
+  },
+  text: {
+    color: theme.text,
+    marginTop: 10,
+  },
   headerImage: {
     color: '#808080',
     bottom: -90,

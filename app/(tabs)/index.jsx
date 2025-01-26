@@ -1,44 +1,44 @@
-import { Image, StyleSheet, Platform, Pressable , View,Text} from 'react-native';
-import { useContext } from 'react';
-import { ThemeContext } from '@/context/ThemeContext';
-
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import Octicons from '@expo/vector-icons/Octicons'
+import { StyleSheet, Image, Text } from "react-native";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function HomeScreen() {
-  const { colorScheme, setColorScheme, theme } = useContext(ThemeContext);
-  const styles = createStyles(theme, colorScheme);
-
   return (
-    <View style={styles.container}>
-      <Pressable
-        onPress={() => setColorScheme(colorScheme === 'light' ? 'dark' : 'light')}
-        style={{ marginLeft: 10 }}
-      >
-        <Octicons
-          name={colorScheme === 'dark' ? 'moon' : 'sun'}
-          size={50}
-          color={theme.text}
-          style={{width: 50,
-          }}
+    <ParallaxScrollView
+      headerBackgroundColor={{ light: "#A1CEDC", dark: "#ffffff" }}
+      headerImage={
+        <Image
+          source={require("@/assets/images/image.png")}
+          style={styles.coverImage}
         />
-      </Pressable>
-     
-    </View>
+      }
+    >
+      <ThemedView style={styles.titleContainer}>
+        <ThemedText type="title">🙏 Welcome to 🙏</ThemedText>
+        <Text style={styles.highlight}>Sri Lanka! 🇱🇰</Text>
+      </ThemedView>
+    </ParallaxScrollView>
   );
 }
 
-const createStyles = (theme, colorScheme) => StyleSheet.create({
-  container: {
+const styles = StyleSheet.create({
+  coverImage: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.background,
+    height: "100%",
+    width: "100%",
+    alignSelf: "center",
+    justifyContent: "center",
   },
-  text: {
-    color: theme.text,
-    marginTop: 10,
+  titleContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    textAlign: "center",
+    gap: 8,
+  },
+  highlight: {
+    fontWeight: "bold",
+    color: "green",
+    fontSize: 50,
   },
 });

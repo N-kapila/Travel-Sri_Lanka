@@ -12,11 +12,17 @@ const districts = {
   "🏔️ Central Province": ["Kandy", "Matale", "Nuwara Eliya"],
   "🏬 Western Province": ["Colombo", "Gampaha", "Kalutara"],
   "🏛️ North Central Province": ["Anuradhapura", "Polonnaruwa"],
-  "🌳 Uva Province": ["Badulla", "Monaragala"],
+  "🛤️ Uva Province": ["Badulla", "Monaragala"],
   "💎 Sabaragamuwa Province": ["Ratnapura", "Kegalle"],
   "🌴 North Western Province": ["Kurunegala", "Puttalam"],
   "🏖️ Eastern Province": ["Trincomalee", "Batticaloa", "Ampara"],
-  "🕉️ Northern Province": ["Jaffna", "Kilinochchi", "Mannar", "Vavuniya", "Mullaitivu"],
+  "🕉️ Northern Province": [
+    "Jaffna",
+    "Kilinochchi",
+    "Mannar",
+    "Vavuniya",
+    "Mullaitivu",
+  ],
 };
 
 export default function HomeScreen() {
@@ -121,17 +127,24 @@ export default function HomeScreen() {
 
         <View>
           {Object.entries(districts).map(([title, places]) => (
-        <Collapsible key={title} title={title}>
-          <FlatList
-            style={styles.districtList}
-            data={places}
-            keyExtractor={(item) => item}
-            renderItem={({ item }) => <Text style={styles.districtListItems}>• {item}</Text>}
-            scrollEnabled={false}  // Prevents FlatList from scrolling
-            nestedScrollEnabled={true} // Allows inner scrolling if needed
-          />
-        </Collapsible>
-      ))}
+           <View key={title} style={{ marginBottom: 15 }}>
+            <Collapsible
+              key={title}
+              title={<Text style={styles.provinceTitle}>{title}</Text>}
+            >
+              <FlatList
+                style={styles.districtList}
+                data={places}
+                keyExtractor={(item) => item}
+                renderItem={({ item }) => (
+                  <Text style={styles.districtListItems}>• {item}</Text>
+                )}
+                scrollEnabled={false} // Prevents FlatList from scrolling
+                nestedScrollEnabled={true} // Allows inner scrolling if needed
+              />
+            </Collapsible>
+            </View>
+          ))}
         </View>
       </ThemedView>
     </ParallaxScrollView>
@@ -175,6 +188,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 16,
     marginBottom: 16,
+    color: "violet",
+  },
+  provinceTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "left",
   },
   districtList: {
     flex: 1,
@@ -182,8 +201,8 @@ const styles = StyleSheet.create({
   },
   districtListItems: {
     fontSize: 16,
-    marginLeft: 10, 
-    color:"white",
+    marginLeft: 20,
+    color: "white",
     fontWeight: "bold",
   },
 });

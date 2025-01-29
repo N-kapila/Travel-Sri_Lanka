@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Image, Text, View, Alert } from "react-native";
+import { StyleSheet, Image, Text, View, Alert, FlatList } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { Collapsible } from "@/components/Collapsible";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
+
+const districts = {
+  "🌊 Down South": ["Galle", "Matara", "Hambantota"],
+  "🏔️ Central Province": ["Kandy", "Matale", "Nuwara Eliya"],
+  "🏬 Western Province": ["Colombo", "Gampaha", "Kalutara"],
+  "🏛️ North Central Province": ["Anuradhapura", "Polonnaruwa"],
+  "🌳 Uva Province": ["Badulla", "Monaragala"],
+  "💎 Sabaragamuwa Province": ["Ratnapura", "Kegalle"],
+  "🌴 North Western Province": ["Kurunegala", "Puttalam"],
+  "🏖️ Eastern Province": ["Trincomalee", "Batticaloa", "Ampara"],
+  "🕉️ Northern Province": ["Jaffna", "Kilinochchi", "Mannar", "Vavuniya", "Mullaitivu"],
+};
 
 export default function HomeScreen() {
   const [location, setLocation] = useState(null); // To store the current location
@@ -80,7 +93,7 @@ export default function HomeScreen() {
       </ThemedView>
 
       <ThemedView style={styles.mapContainer}>
-        <ThemedText type="subtitle">Tourist Spots</ThemedText>
+        <ThemedText type="subtitle">Major Tourist Spots 📍</ThemedText>
         <MapView
           style={styles.map}
           initialRegion={initialRegion}
@@ -100,6 +113,27 @@ export default function HomeScreen() {
           ))}
         </MapView>
       </ThemedView>
+
+      <ThemedView style={styles.districtContainer}>
+        <ThemedText type="title" style={styles.districtTitle}>
+          🏔️ Discover the Hidden Gems!
+        </ThemedText>
+
+        <View>
+          {Object.entries(districts).map(([title, places]) => (
+        <Collapsible key={title} title={title}>
+          <FlatList
+            style={styles.districtList}
+            data={places}
+            keyExtractor={(item) => item}
+            renderItem={({ item }) => <Text style={styles.districtListItems}>• {item}</Text>}
+            scrollEnabled={false}  // Prevents FlatList from scrolling
+            nestedScrollEnabled={true} // Allows inner scrolling if needed
+          />
+        </Collapsible>
+      ))}
+        </View>
+      </ThemedView>
     </ParallaxScrollView>
   );
 }
@@ -107,7 +141,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   coverImage: {
     flex: 1,
-    height: "100%",
+    height: 400,
     width: "100%",
     alignSelf: "center",
     justifyContent: "center",
@@ -130,5 +164,26 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
     height: "100%",
+    marginTop: 16,
+  },
+  districtContainer: {
+    flex: 1,
+    marginTop: 16,
+    gap: 16,
+  },
+  districtTitle: {
+    textAlign: "center",
+    marginTop: 16,
+    marginBottom: 16,
+  },
+  districtList: {
+    flex: 1,
+    padding: 10,
+  },
+  districtListItems: {
+    fontSize: 16,
+    marginLeft: 10, 
+    color:"white",
+    fontWeight: "bold",
   },
 });
